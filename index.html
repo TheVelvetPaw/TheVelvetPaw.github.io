@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paws & Hope Animal Shelter</title>
+  <meta name="description" content="Paws & Hope Animal Shelter rescues, rehabilitates, and rehomes abandoned animals." />
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fafafa;
+    }
+    header {
+      background: #2e7d32;
+      color: #fff;
+      padding: 20px 0;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav a {
+      color: #fff;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .hero {
+      background: url('https://images.unsplash.com/photo-1558944351-cb6be0b6f1d1?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 120px 20px;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    .btn {
+      background: #ff7043;
+      color: #fff;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #f4511e;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      border-left: 6px solid #2e7d32;
+      padding-left: 12px;
+    }
+    .about p {
+      max-width: 800px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .card .content {
+      padding: 18px;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .adoption-steps li {
+      margin-bottom: 10px;
+    }
+    .contact-info p {
+      margin: 6px 0;
+    }
+    footer {
+      background: #1b1b1b;
+      color: #ccc;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-container">
+    <h2>Paws & Hope</h2>
+    <nav>
+      <a href="#about">About Us</a>
+      <a href="#animals">Animals</a>
+      <a href="#adoption">Adoption</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Every Life Deserves a Loving Home</h1>
+  <p>Rescuing abandoned animals and helping them find forever families</p>
+  <button class="btn">View Animals for Adoption</button>
+</section>
+
+<section id="about" class="container about">
+  <h2 class="section-title">About Our Shelter</h2>
+  <p>
+    Paws & Hope Animal Shelter is a registered non-profit organization dedicated to rescuing,
+    rehabilitating, and rehoming abandoned, abused, and neglected animals. Our mission is to
+    promote responsible pet ownership and ensure that every animal is treated with compassion
+    and dignity.
+  </p>
+</section>
+
+<section id="animals" class="container">
+  <h2 class="section-title">Animals Currently in Our Care</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="https://placekitten.com/500/350" alt="Cat named Luna" />
+      <div class="content">
+        <h3>Luna</h3>
+        <p>Age: 2 years<br />Gender: Female<br />Breed: Domestic Shorthair</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://placedog.net/500/350" alt="Dog named Max" />
+      <div class="content">
+        <h3>Max</h3>
+        <p>Age: 3 years<br />Gender: Male<br />Breed: Mixed</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://placedog.net/501/350" alt="Dog named Bella" />
+      <div class="content">
+        <h3>Bella</h3>
+        <p>Age: 1 year<br />Gender: Female<br />Breed: Labrador Mix</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="adoption" class="container">
+  <h2 class="section-title">Adoption Process</h2>
+  <ol class="adoption-steps">
+    <li>Browse available animals and submit an adoption application.</li>
+    <li>Meet-and-greet session with the animal and our staff.</li>
+    <li>Home check and interview (if required).</li>
+    <li>Finalize adoption and welcome your new family member.</li>
+  </ol>
+</section>
+
+<section id="contact" class="container contact-info">
+  <h2 class="section-title">Contact Us</h2>
+  <p>Email: contact@pawsandhope.org</p>
+  <p>Phone: +1 (555) 123-4567</p>
+  <p>Address: 123 Shelter Lane, Hope City, CA</p>
+</section>
+
+<footer>
+  <p>© 2026 Paws & Hope Animal Shelter. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
