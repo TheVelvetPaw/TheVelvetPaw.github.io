@@ -5,19 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Paws & Hope Animal Shelter</title>
   <meta name="description" content="Paws & Hope Animal Shelter rescues, rehabilitates, and rehomes abandoned animals." />
+
   <style>
+    :root{
+      /* Luxury palette: soft yellow + deep navy */
+      --bg: #fbf7ea;           /* very light warm yellow */
+      --surface: #ffffff;      /* card surface */
+      --surface-2: #fffaf0;    /* subtle warm surface */
+      --text: #132238;         /* deep navy-ish text */
+      --muted: #4b5a70;        /* muted navy */
+      --navy: #0b1f3a;         /* deep navy */
+      --navy-2:#123a6b;        /* secondary navy */
+      --accent: #d4a017;       /* refined gold/yellow accent */
+      --accent-2:#b88912;      /* hover gold */
+      --border: rgba(11,31,58,0.12);
+      --shadow: 0 10px 30px rgba(11,31,58,0.12);
+      --shadow-soft: 0 6px 16px rgba(11,31,58,0.10);
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background-color: #fafafa;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--text);
+      background: radial-gradient(1200px 500px at 20% 0%, rgba(212,160,23,0.10), transparent 60%),
+                  radial-gradient(900px 500px at 80% 10%, rgba(18,58,107,0.10), transparent 65%),
+                  var(--bg);
     }
+
     header {
-      background: #2e7d32;
+      background: linear-gradient(135deg, var(--navy) 0%, #08162b 100%);
       color: #fff;
-      padding: 20px 0;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(6px);
     }
+
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -25,170 +53,253 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 18px;
     }
+
+    .nav-container h2{
+      margin: 0;
+      letter-spacing: 0.3px;
+      font-weight: 750;
+    }
+
     nav a {
-      color: #fff;
-      margin-left: 20px;
+      color: rgba(255,255,255,0.92);
+      margin-left: 18px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 650;
+      position: relative;
+      padding: 6px 2px;
     }
+
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0%;
+      height:2px;
+      background: linear-gradient(90deg, var(--accent), rgba(212,160,23,0));
+      transition: width 220ms ease;
+    }
+
     nav a:hover {
-      text-decoration: underline;
+      color: #fff;
     }
+    nav a:hover::after{
+      width:100%;
+    }
+
     .hero {
-      background: url('https://images.unsplash.com/photo-1558944351-cb6be0b6f1d1?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+      background:
+        linear-gradient(115deg, rgba(11,31,58,0.78), rgba(11,31,58,0.35)),
+        url('https://images.unsplash.com/photo-1558944351-cb6be0b6f1d1?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
       color: #fff;
       text-align: center;
       padding: 120px 20px;
+      border-bottom: 1px solid rgba(11,31,58,0.10);
     }
+
     .hero h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
+      font-size: clamp(2.1rem, 3.2vw, 3.1rem);
+      margin-bottom: 12px;
+      letter-spacing: 0.2px;
     }
+
     .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
+      font-size: 1.12rem;
+      margin: 0 auto 30px;
+      max-width: 720px;
+      color: rgba(255,255,255,0.92);
     }
+
     .btn {
-      background: #ff7043;
-      color: #fff;
-      border: none;
+      background: linear-gradient(135deg, var(--accent) 0%, #e2b22f 100%);
+      color: #0b1f3a;
+      border: 1px solid rgba(255,255,255,0.22);
       padding: 14px 22px;
-      border-radius: 6px;
+      border-radius: 10px;
       font-size: 1rem;
       cursor: pointer;
+      font-weight: 750;
+      box-shadow: 0 10px 22px rgba(11,31,58,0.18);
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+      text-decoration: none; /* in case you switch button to <a> */
+      display: inline-block;
     }
+
     .btn:hover {
-      background: #f4511e;
+      filter: brightness(0.98);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(11,31,58,0.22);
     }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 64px 20px;
     }
+
     .section-title {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      border-left: 6px solid #2e7d32;
+      font-size: 1.85rem;
+      margin-bottom: 18px;
+      border-left: 6px solid var(--accent);
       padding-left: 12px;
+      letter-spacing: 0.2px;
     }
+
     .about p {
-      max-width: 800px;
+      max-width: 840px;
+      color: var(--muted);
     }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+      gap: 22px;
     }
+
     .card {
-      background: #fff;
-      border-radius: 10px;
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border);
+      transform: translateY(0);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
     }
+
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(11,31,58,0.18);
+    }
+
     .card img {
       width: 100%;
-      height: 200px;
+      height: 210px;
       object-fit: cover;
+      filter: saturate(1.02) contrast(1.02);
     }
+
     .card .content {
-      padding: 18px;
+      padding: 18px 18px 20px;
     }
+
     .card h3 {
-      margin-top: 0;
+      margin: 6px 0 10px;
+      color: var(--navy);
+      letter-spacing: 0.2px;
     }
+
+    .card p{
+      margin: 0;
+      color: var(--muted);
+    }
+
     .adoption-steps li {
       margin-bottom: 10px;
+      color: var(--muted);
     }
+
     .contact-info p {
       margin: 6px 0;
+      color: var(--muted);
     }
+
     footer {
-      background: #1b1b1b;
-      color: #ccc;
+      background: linear-gradient(135deg, #071427 0%, var(--navy) 100%);
+      color: rgba(255,255,255,0.78);
       text-align: center;
       padding: 30px 20px;
       font-size: 0.9rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
   </style>
 </head>
+
 <body>
 
-<header>
-  <div class="nav-container">
-    <h2>Paws & Hope</h2>
-    <nav>
-      <a href="#about">About Us</a>
-      <a href="#animals">Animals</a>
-      <a href="#adoption">Adoption</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
+  <header>
+    <div class="nav-container">
+      <h2>Paws & Hope</h2>
+      <nav>
+        <a href="#about">About Us</a>
+        <a href="#animals">Animals</a>
+        <a href="#adoption">Adoption</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<section class="hero">
-  <h1>Every Life Deserves a Loving Home</h1>
-  <p>Rescuing abandoned animals and helping them find forever families</p>
-  <button class="btn">View Animals for Adoption</button>
-</section>
+  <section class="hero">
+    <h1>Every Life Deserves a Loving Home</h1>
+    <p>Rescuing abandoned animals and helping them find forever families</p>
+    <button class="btn">View Animals for Adoption</button>
+    <!-- If you want the button to scroll to Animals section, replace the line above with:
+    <a class="btn" href="#animals">View Animals for Adoption</a>
+    -->
+  </section>
 
-<section id="about" class="container about">
-  <h2 class="section-title">About Our Shelter</h2>
-  <p>
-    Paws & Hope Animal Shelter is a registered non-profit organization dedicated to rescuing,
-    rehabilitating, and rehoming abandoned, abused, and neglected animals. Our mission is to
-    promote responsible pet ownership and ensure that every animal is treated with compassion
-    and dignity.
-  </p>
-</section>
+  <section id="about" class="container about">
+    <h2 class="section-title">About Our Shelter</h2>
+    <p>
+      Paws & Hope Animal Shelter is a registered non-profit organization dedicated to rescuing,
+      rehabilitating, and rehoming abandoned, abused, and neglected animals. Our mission is to
+      promote responsible pet ownership and ensure that every animal is treated with compassion
+      and dignity.
+    </p>
+  </section>
 
-<section id="animals" class="container">
-  <h2 class="section-title">Animals Currently in Our Care</h2>
-  <div class="cards">
-    <div class="card">
-      <img src="https://placekitten.com/500/350" alt="Cat named Luna" />
-      <div class="content">
-        <h3>Luna</h3>
-        <p>Age: 2 years<br />Gender: Female<br />Breed: Domestic Shorthair</p>
+  <section id="animals" class="container">
+    <h2 class="section-title">Animals Currently in Our Care</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://placekitten.com/500/350" alt="Cat named Luna" />
+        <div class="content">
+          <h3>Luna</h3>
+          <p>Age: 2 years<br />Gender: Female<br />Breed: Domestic Shorthair</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://placedog.net/500/350" alt="Dog named Max" />
+        <div class="content">
+          <h3>Max</h3>
+          <p>Age: 3 years<br />Gender: Male<br />Breed: Mixed</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://placedog.net/501/350" alt="Dog named Bella" />
+        <div class="content">
+          <h3>Bella</h3>
+          <p>Age: 1 year<br />Gender: Female<br />Breed: Labrador Mix</p>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <img src="https://placedog.net/500/350" alt="Dog named Max" />
-      <div class="content">
-        <h3>Max</h3>
-        <p>Age: 3 years<br />Gender: Male<br />Breed: Mixed</p>
-      </div>
-    </div>
-    <div class="card">
-      <img src="https://placedog.net/501/350" alt="Dog named Bella" />
-      <div class="content">
-        <h3>Bella</h3>
-        <p>Age: 1 year<br />Gender: Female<br />Breed: Labrador Mix</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="adoption" class="container">
-  <h2 class="section-title">Adoption Process</h2>
-  <ol class="adoption-steps">
-    <li>Browse available animals and submit an adoption application.</li>
-    <li>Meet-and-greet session with the animal and our staff.</li>
-    <li>Home check and interview (if required).</li>
-    <li>Finalize adoption and welcome your new family member.</li>
-  </ol>
-</section>
+  <section id="adoption" class="container">
+    <h2 class="section-title">Adoption Process</h2>
+    <ol class="adoption-steps">
+      <li>Browse available animals and submit an adoption application.</li>
+      <li>Meet-and-greet session with the animal and our staff.</li>
+      <li>Home check and interview (if required).</li>
+      <li>Finalize adoption and welcome your new family member.</li>
+    </ol>
+  </section>
 
-<section id="contact" class="container contact-info">
-  <h2 class="section-title">Contact Us</h2>
-  <p>Email: contact@pawsandhope.org</p>
-  <p>Phone: +1 (555) 123-4567</p>
-  <p>Address: 123 Shelter Lane, Hope City, CA</p>
-</section>
+  <section id="contact" class="container contact-info">
+    <h2 class="section-title">Contact Us</h2>
+    <p>Email: contact@pawsandhope.org</p>
+    <p>Phone: +1 (555) 123-4567</p>
+    <p>Address: 123 Shelter Lane, Hope City, CA</p>
+  </section>
 
-<footer>
-  <p>© 2026 Paws & Hope Animal Shelter. All rights reserved.</p>
-</footer>
+  <footer>
+    <p>© 2026 Paws & Hope Animal Shelter. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
+
