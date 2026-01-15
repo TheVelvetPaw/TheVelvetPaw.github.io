@@ -559,7 +559,22 @@
       text-transform: uppercase;
       color: rgba(75,90,112,0.90);
       margin-bottom: 8px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
     }
+
+    .lang-select{
+      border: 1px solid rgba(11,31,58,0.16);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-weight: 850;
+      color: var(--navy);
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(11,31,58,0.06);
+    }
+    .lang-select:focus{ outline: none; box-shadow: var(--ring); border-color: rgba(212,160,23,0.55); }
 
     .contact-link{
       display: inline-block;
@@ -773,24 +788,30 @@
     </ol>
   </section>
 
-  <!-- ✅ Contact 섹션 포맷 변경 -->
+  <!-- ✅ Contact 섹션: 포맷 유지 + 값 변경 + 주소 언어 선택 -->
   <section id="contact" class="container contact-info">
     <h2 class="section-title">Contact Us</h2>
 
     <div class="contact-grid" role="list">
       <div class="contact-card" role="listitem">
         <div class="contact-label">Email</div>
-        <a class="contact-link" href="mailto:contact@pawsandhope.org">contact@pawsandhope.org</a>
+        <a class="contact-link" href="mailto:pji921007@gmail.com">pji921007@gmail.com</a>
       </div>
 
       <div class="contact-card" role="listitem">
         <div class="contact-label">Phone</div>
-        <a class="contact-link" href="tel:+15551234567">+1 (555) 123-4567</a>
+        <a class="contact-link" href="tel:+821055125513">+82 10-5512-5513</a>
       </div>
 
       <div class="contact-card" role="listitem">
-        <div class="contact-label">Address</div>
-        <div class="contact-value">123 Shelter Lane, Hope City, CA</div>
+        <div class="contact-label">
+          Address
+          <select class="lang-select" id="addressLang" aria-label="Address language">
+            <option value="ko" selected>KO</option>
+            <option value="en">EN</option>
+          </select>
+        </div>
+        <div class="contact-value" id="addressValue">경기도 평택시 독곡동 289-6</div>
       </div>
     </div>
   </section>
@@ -898,6 +919,21 @@
       const searchInput = $("#searchInput");
       const draftStatus = $("#draftStatus");
       const editMeta = $("#editMeta");
+
+      // Address language toggle (Contact section)
+      const addressLang = $("#addressLang");
+      const addressValue = $("#addressValue");
+      const ADDRESS_KO = "경기도 평택시 독곡동 289-6";
+      const ADDRESS_EN = "289-6 Dokgok-dong, Pyeongtaek-si, Gyeonggi-do, South Korea";
+
+      function renderAddressLang(lang) {
+        if (!addressValue) return;
+        addressValue.textContent = (lang === "en") ? ADDRESS_EN : ADDRESS_KO;
+      }
+      if (addressLang) {
+        addressLang.addEventListener("change", () => renderAddressLang(addressLang.value));
+        renderAddressLang(addressLang.value);
+      }
 
       // --- State (future-friendly default: 2026-01) ---
       let viewDate = new Date(2026, 0, 1);      // month being displayed (starts at 2026 Jan)
@@ -1210,4 +1246,5 @@
 
 </body>
 </html>
+
 
