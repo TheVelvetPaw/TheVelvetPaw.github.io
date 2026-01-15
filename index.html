@@ -718,7 +718,105 @@
   <footer>
     <p>© 2026 Paws & Hope Animal Shelter. All rights reserved.</p>
   </footer>
+<script>
+  (function () {
+    const STORAGE_KEY = "pawsHope.calendarNotes.v1";
 
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const toISODate = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+
+    const fromISODate = (iso) => {
+      const [y, m, day] = iso.split("-").map(Number);
+      return new Date(y, m - 1, day);
+    };
+
+    const formatMonthTitle = (d) =>
+      d.toLocaleDateString(undefined, { year: "numeric", month: "long" });
+
+    const formatHumanDate = (iso) =>
+      fromISODate(iso).toLocaleDateString(undefined, { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+
+    const formatTime = (ms) =>
+      new Date(ms).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+
+    const uid = () => `note_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
+    const escapeHTML = (s) =>
+      s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+    function loadNotes() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveNotes(notes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    }
+
+    function upsertNote(note) {
+      const notes = loadNotes();
+      const idx = notes.findIndex(n => n.id === note.id);
+      if (idx >= 0) notes[idx] = note;
+      else notes.unshift(note);
+      saveNotes(notes);
+    }
+
+    function deleteNoteById(id) {
+      const notes = loadNotes().filter(n => n.id !== id);
+      saveNotes(notes);
+    }
+
+    function countNotesByDate(notes) {
+      const map = new Map();
+      for (const n of notes) {
+        map.set(n.dateISO, (map.get(n.dateISO) || 0) + 1);
+      }
+      return map;
+    }
+
+    const $ = (sel) => document.querySelector(sel);
+
+    const calendarGrid = $("#calendarGrid");
+    const monthTitle = $("#monthTitle");
+    const selectedDatePill = $("#selectedDatePill");
+    const prevMonthBtn = $("#prevMonth");
+    const nextMonthBtn = $("#nextMonth");
+    const todayBtn = $("#todayBtn");
+    const noteForm = $("#noteForm");
+    const animalSelect = $("#animalSelect");
+    const dateInput = $("#dateInput");
+    const noteText = $("#noteText");
+    const saveBtn = $("#saveBtn");
+    const clearBtn = $("#clearBtn");
+    const deleteBtn = $("#deleteBtn");
+    const commentList = $("#commentList");
+    const emptyState = $("#emptyState");
+    const commentCountPill = $("#commentCountPill");
+    const filterAnimal = $("#filterAnimal");
+    const filterDate = $("#filterDate");
+    const searchInput = $("#searchInput");
+    const draftStatus = $("#draftStatus");
+    const editMeta = $("#editMeta");
+
+    let viewDate = new Date(2026, 0, 1);
+    let selectedISO = toISODate(viewDate);
+    let editingNoteId = null;
+
+    (function init() {
+      selectedISO = toISODate(viewDate);
+      if (dateInput) dateInput.value = selectedISO;
+      if (typeof renderCalendar === 'function') renderCalendar();
+      if (typeof resetEditor === 'function') resetEditor();
+      if (typeof renderNotesList === 'function') renderNotesList();
+    })();
+  })();
+</script>
   <script>
     /**
      * Smart Calendar Notes
