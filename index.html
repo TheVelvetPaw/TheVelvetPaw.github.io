@@ -186,7 +186,6 @@
     .card p{ margin: 0; color: var(--muted); }
 
     .adoption-steps li { margin-bottom: 10px; color: var(--muted); }
-    .contact-info p { margin: 6px 0; color: var(--mut registering???); } /* ignore, we'll fix below */
   </style>
 
   <style>
@@ -288,6 +287,19 @@
       margin-right: auto;
     }
 
+    .jump{
+      border: 1px solid rgba(11,31,58,0.16);
+      border-radius: 10px;
+      padding: 10px 10px;
+      font-weight: 850;
+      color: var(--navy);
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(11,31,58,0.08);
+    }
+    .jump:focus{ outline: none; box-shadow: var(--ring); border-color: rgba(212,160,23,0.55); }
+    #jumpYear{ width: 148px; }
+    #jumpMonth{ width: 108px; }
+
     .calendar-grid{
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -380,7 +392,7 @@
       letter-spacing: 0.04em;
     }
 
-    select, input[type="text"], textarea{
+    select, input[type="text"], input[type="number"], textarea{
       width: 100%;
       border: 1px solid rgba(11,31,58,0.16);
       border-radius: 12px;
@@ -398,7 +410,7 @@
       line-height: 1.55;
     }
 
-    select:focus, input[type="text"]:focus, textarea:focus{
+    select:focus, input[type="text"]:focus, input[type="number"]:focus, textarea:focus{
       outline: none;
       box-shadow: var(--ring);
       border-color: rgba(212,160,23,0.55);
@@ -520,8 +532,52 @@
       border: 0;
     }
 
-    /* Fix original contact color typo */
-    .contact-info p { margin: 6px 0; color: var(--muted); }
+    /* ---- Contact formatting upgrade ---- */
+    .contact-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 780px){
+      .contact-grid{ grid-template-columns: 1fr; }
+    }
+
+    .contact-card{
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+    }
+
+    .contact-label{
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(75,90,112,0.90);
+      margin-bottom: 8px;
+    }
+
+    .contact-link{
+      display: inline-block;
+      font-weight: 900;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 2px solid rgba(212,160,23,0.35);
+      padding-bottom: 2px;
+    }
+
+    .contact-link:hover{
+      border-bottom-color: rgba(212,160,23,0.7);
+    }
+
+    .contact-value{
+      font-weight: 800;
+      color: rgba(19,34,56,0.92);
+    }
 
     footer {
       background: linear-gradient(135deg, #071427 0%, var(--navy) 100%);
@@ -579,6 +635,15 @@
           </h3>
           <div class="cal-controls" aria-label="Calendar controls">
             <div class="month-title" id="monthTitle" aria-live="polite"></div>
+
+            <input class="jump" id="jumpYear" type="number" inputmode="numeric" min="2026" placeholder="Year (e.g., 2026)" aria-label="Jump year" />
+            <select class="jump" id="jumpMonth" aria-label="Jump month">
+              <option value="0">Jan</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Apr</option>
+              <option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7">Aug</option>
+              <option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dec</option>
+            </select>
+            <button class="icon-btn" type="button" id="jumpGo" aria-label="Go to year and month">Go</button>
+
             <button class="icon-btn" type="button" id="prevMonth" aria-label="Previous month">‹</button>
             <button class="icon-btn" type="button" id="nextMonth" aria-label="Next month">›</button>
             <button class="icon-btn primary" type="button" id="todayBtn" aria-label="Go to today">Today</button>
@@ -708,129 +773,40 @@
     </ol>
   </section>
 
+  <!-- ✅ Contact 섹션 포맷 변경 -->
   <section id="contact" class="container contact-info">
     <h2 class="section-title">Contact Us</h2>
-    <p>Email: contact@pawsandhope.org</p>
-    <p>Phone: +1 (555) 123-4567</p>
-    <p>Address: 123 Shelter Lane, Hope City, CA</p>
+
+    <div class="contact-grid" role="list">
+      <div class="contact-card" role="listitem">
+        <div class="contact-label">Email</div>
+        <a class="contact-link" href="mailto:contact@pawsandhope.org">contact@pawsandhope.org</a>
+      </div>
+
+      <div class="contact-card" role="listitem">
+        <div class="contact-label">Phone</div>
+        <a class="contact-link" href="tel:+15551234567">+1 (555) 123-4567</a>
+      </div>
+
+      <div class="contact-card" role="listitem">
+        <div class="contact-label">Address</div>
+        <div class="contact-value">123 Shelter Lane, Hope City, CA</div>
+      </div>
+    </div>
   </section>
 
   <footer>
     <p>© 2026 Paws & Hope Animal Shelter. All rights reserved.</p>
   </footer>
-<script>
-  (function () {
-    const STORAGE_KEY = "pawsHope.calendarNotes.v1";
 
-    const pad2 = (n) => String(n).padStart(2, "0");
-    const toISODate = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-
-    const fromISODate = (iso) => {
-      const [y, m, day] = iso.split("-").map(Number);
-      return new Date(y, m - 1, day);
-    };
-
-    const formatMonthTitle = (d) =>
-      d.toLocaleDateString(undefined, { year: "numeric", month: "long" });
-
-    const formatHumanDate = (iso) =>
-      fromISODate(iso).toLocaleDateString(undefined, { weekday: "short", year: "numeric", month: "short", day: "numeric" });
-
-    const formatTime = (ms) =>
-      new Date(ms).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
-
-    const uid = () => `note_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-
-    const escapeHTML = (s) =>
-      s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-    function loadNotes() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return [];
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveNotes(notes) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-    }
-
-    function upsertNote(note) {
-      const notes = loadNotes();
-      const idx = notes.findIndex(n => n.id === note.id);
-      if (idx >= 0) notes[idx] = note;
-      else notes.unshift(note);
-      saveNotes(notes);
-    }
-
-    function deleteNoteById(id) {
-      const notes = loadNotes().filter(n => n.id !== id);
-      saveNotes(notes);
-    }
-
-    function countNotesByDate(notes) {
-      const map = new Map();
-      for (const n of notes) {
-        map.set(n.dateISO, (map.get(n.dateISO) || 0) + 1);
-      }
-      return map;
-    }
-
-    const $ = (sel) => document.querySelector(sel);
-
-    const calendarGrid = $("#calendarGrid");
-    const monthTitle = $("#monthTitle");
-    const selectedDatePill = $("#selectedDatePill");
-    const prevMonthBtn = $("#prevMonth");
-    const nextMonthBtn = $("#nextMonth");
-    const todayBtn = $("#todayBtn");
-    const noteForm = $("#noteForm");
-    const animalSelect = $("#animalSelect");
-    const dateInput = $("#dateInput");
-    const noteText = $("#noteText");
-    const saveBtn = $("#saveBtn");
-    const clearBtn = $("#clearBtn");
-    const deleteBtn = $("#deleteBtn");
-    const commentList = $("#commentList");
-    const emptyState = $("#emptyState");
-    const commentCountPill = $("#commentCountPill");
-    const filterAnimal = $("#filterAnimal");
-    const filterDate = $("#filterDate");
-    const searchInput = $("#searchInput");
-    const draftStatus = $("#draftStatus");
-    const editMeta = $("#editMeta");
-
-    let viewDate = new Date(2026, 0, 1);
-    let selectedISO = toISODate(viewDate);
-    let editingNoteId = null;
-
-    (function init() {
-      selectedISO = toISODate(viewDate);
-      if (dateInput) dateInput.value = selectedISO;
-      if (typeof renderCalendar === 'function') renderCalendar();
-      if (typeof resetEditor === 'function') resetEditor();
-      if (typeof renderNotesList === 'function') renderNotesList();
-    })();
-  })();
-</script>
+  <!-- ✅ Smart Calendar Script (single, fixed, future-friendly) -->
   <script>
-    /**
-     * Smart Calendar Notes
-     * - Serverless: stores notes in localStorage
-     * - Keyed by note.id; each note includes dateISO + animal + text + timestamps
-     * - UI: monthly calendar with note-count badges; right panel CRUD + search/filter
-     */
-
     (function () {
       const STORAGE_KEY = "pawsHope.calendarNotes.v1";
 
       // --- Utilities ---
       const pad2 = (n) => String(n).padStart(2, "0");
-      const toISODate = (d) => ${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())};
+      const toISODate = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
       const fromISODate = (iso) => {
         const [y, m, day] = iso.split("-").map(Number);
         return new Date(y, m - 1, day);
@@ -845,13 +821,12 @@
       const formatTime = (ms) =>
         new Date(ms).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 
-      const uid = () => {
-        // Collision-safe enough for local notes
-        return note_${Date.now()}_${Math.random().toString(16).slice(2)};
-      };
+      const uid = () => `note_${Date.now()}_${Math.random().toString(16).slice(2)}`;
 
       const escapeHTML = (s) =>
-        s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
+        String(s).replace(/[&<>"']/g, (c) => ({
+          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+        }[c]));
 
       // --- Storage ---
       function loadNotes() {
@@ -901,6 +876,10 @@
       const nextMonthBtn = $("#nextMonth");
       const todayBtn = $("#todayBtn");
 
+      const jumpYear = $("#jumpYear");
+      const jumpMonth = $("#jumpMonth");
+      const jumpGo = $("#jumpGo");
+
       const noteForm = $("#noteForm");
       const animalSelect = $("#animalSelect");
       const dateInput = $("#dateInput");
@@ -920,12 +899,12 @@
       const draftStatus = $("#draftStatus");
       const editMeta = $("#editMeta");
 
-      // --- State ---
-      let viewDate = new Date();           // controls which month is displayed
-      let selectedISO = toISODate(new Date());  // currently selected calendar day
+      // --- State (future-friendly default: 2026-01) ---
+      let viewDate = new Date(2026, 0, 1);      // month being displayed (starts at 2026 Jan)
+      let selectedISO = toISODate(viewDate);     // selected day (starts at 2026-01-01)
       let editingNoteId = null;
 
-      // --- Render calendar ---
+      // --- Calendar helpers ---
       function getMonthMatrix(date) {
         const year = date.getFullYear();
         const month = date.getMonth();
@@ -950,6 +929,10 @@
         monthTitle.textContent = formatMonthTitle(viewDate);
         selectedDatePill.textContent = formatHumanDate(selectedISO);
 
+        // keep jump inputs in sync
+        if (jumpYear) jumpYear.value = String(viewDate.getFullYear());
+        if (jumpMonth) jumpMonth.value = String(viewDate.getMonth());
+
         const { month, days } = getMonthMatrix(viewDate);
         calendarGrid.innerHTML = "";
 
@@ -962,13 +945,15 @@
           btn.type = "button";
           btn.className = "day" + (isCurrentMonth ? "" : " muted") + (isSelected ? " selected" : "");
           btn.setAttribute("role", "gridcell");
-          btn.setAttribute("aria-label", ${formatHumanDate(iso)}${countMap.get(iso) ? , ${countMap.get(iso)} notes : ""});
+          btn.setAttribute(
+            "aria-label",
+            `${formatHumanDate(iso)}${countMap.get(iso) ? `, ${countMap.get(iso)} notes` : ""}`
+          );
           btn.dataset.iso = iso;
 
           const num = document.createElement("div");
           num.className = "num";
           num.textContent = d.getDate();
-
           btn.appendChild(num);
 
           const count = countMap.get(iso) || 0;
@@ -979,10 +964,7 @@
             btn.appendChild(badge);
           }
 
-          btn.addEventListener("click", () => {
-            selectDate(iso);
-          });
-
+          btn.addEventListener("click", () => selectDate(iso));
           calendarGrid.appendChild(btn);
         }
       }
@@ -999,7 +981,6 @@
       // --- Notes list + filters ---
       function getFilteredNotes() {
         const notes = loadNotes();
-
         const a = filterAnimal.value;
         const d = filterDate.value;
         const q = searchInput.value.trim().toLowerCase();
@@ -1008,7 +989,7 @@
           if (a !== "ALL" && n.animal !== a) return false;
           if (d === "SELECTED" && n.dateISO !== selectedISO) return false;
           if (q) {
-            const hay = ${n.animal} ${n.dateISO} ${n.text}.toLowerCase();
+            const hay = `${n.animal} ${n.dateISO} ${n.text}`.toLowerCase();
             if (!hay.includes(q)) return false;
           }
           return true;
@@ -1018,9 +999,7 @@
       function renderNotesList() {
         const notes = getFilteredNotes();
 
-        // Count pill should reflect filtered list
-        commentCountPill.textContent = ${notes.length} note${notes.length === 1 ? "" : "s"};
-
+        commentCountPill.textContent = `${notes.length} note${notes.length === 1 ? "" : "s"}`;
         commentList.innerHTML = "";
         emptyState.style.display = notes.length ? "none" : "block";
 
@@ -1028,7 +1007,7 @@
           const item = document.createElement("div");
           item.className = "comment-item";
 
-          item.innerHTML = 
+          item.innerHTML = `
             <div class="comment-top">
               <p class="comment-title">${escapeHTML(n.animal)} • ${escapeHTML(n.dateISO)}</p>
               <span class="comment-time">
@@ -1040,7 +1019,7 @@
               <button class="mini" type="button" data-action="edit" data-id="${escapeHTML(n.id)}">Edit</button>
               <button class="mini danger" type="button" data-action="delete" data-id="${escapeHTML(n.id)}">Delete</button>
             </div>
-          ;
+          `;
 
           item.querySelector('[data-action="edit"]').addEventListener("click", () => startEdit(n.id));
           item.querySelector('[data-action="delete"]').addEventListener("click", () => confirmDelete(n.id));
@@ -1048,14 +1027,13 @@
           commentList.appendChild(item);
         }
 
-        // Update calendar badges too
+        // Keep calendar badges in sync
         renderCalendar();
       }
 
       // --- Editor ---
       function resetEditor() {
         editingNoteId = null;
-        animalSelect.value = animalSelect.value || "Luna";
         dateInput.value = selectedISO;
         noteText.value = "";
         deleteBtn.style.display = "none";
@@ -1074,23 +1052,18 @@
         dateInput.value = found.dateISO;
         noteText.value = found.text;
 
-        // If user edits a note from another day, reflect selection
-        if (found.dateISO !== selectedISO) {
-          selectedISO = found.dateISO;
-        }
+        if (found.dateISO !== selectedISO) selectedISO = found.dateISO;
 
         deleteBtn.style.display = "inline-flex";
         deleteBtn.dataset.id = id;
-        editMeta.textContent = Editing: ${found.animal} on ${found.dateISO};
+        editMeta.textContent = `Editing: ${found.animal} on ${found.dateISO}`;
         saveBtn.textContent = "Update Note";
         draftStatus.textContent = "Edit mode: update and save, or delete if needed.";
 
-        // Ensure calendar highlights the note's date
-        viewDate = fromISODate(found.dateISO);
+        viewDate = new Date(fromISODate(found.dateISO).getFullYear(), fromISODate(found.dateISO).getMonth(), 1);
         renderCalendar();
         renderNotesList();
 
-        // Scroll editor into view on mobile
         noteText.focus({ preventScroll: false });
       }
 
@@ -1099,7 +1072,9 @@
         const found = notes.find(n => n.id === id);
         if (!found) return;
 
-        const ok = confirm(Delete this note?\n\n${found.animal} • ${found.dateISO}\n\n"${found.text.slice(0, 80)}${found.text.length > 80 ? "…" : ""}");
+        const ok = confirm(
+          `Delete this note?\n\n${found.animal} • ${found.dateISO}\n\n"${found.text.slice(0, 80)}${found.text.length > 80 ? "…" : ""}"`
+        );
         if (!ok) return;
 
         deleteNoteById(id);
@@ -1124,39 +1099,30 @@
         if (editingNoteId) {
           const notes = loadNotes();
           const existing = notes.find(n => n.id === editingNoteId);
-          if (!existing) {
-            draftStatus.textContent = "That note no longer exists. Saving as a new note.";
-            editingNoteId = null;
-          } else {
-            const updated = {
-              ...existing,
-              animal,
-              dateISO,
-              text,
-              updatedAt: now
-            };
-            upsertNote(updated);
+          if (existing) {
+            upsertNote({ ...existing, animal, dateISO, text, updatedAt: now });
             draftStatus.textContent = "Updated ✔";
             selectedISO = dateISO;
-            viewDate = fromISODate(dateISO);
+            viewDate = new Date(fromISODate(dateISO).getFullYear(), fromISODate(dateISO).getMonth(), 1);
             renderNotesList();
             return;
+          } else {
+            editingNoteId = null;
           }
         }
 
-        const note = {
+        upsertNote({
           id: uid(),
           animal,
           dateISO,
           text,
           createdAt: now,
           updatedAt: null
-        };
+        });
 
-        upsertNote(note);
         draftStatus.textContent = "Saved ✔";
         selectedISO = dateISO;
-        viewDate = fromISODate(dateISO);
+        viewDate = new Date(fromISODate(dateISO).getFullYear(), fromISODate(dateISO).getMonth(), 1);
         resetEditor();
         renderNotesList();
       });
@@ -1189,6 +1155,18 @@
         selectDate(toISODate(today));
       });
 
+      // Jump to year/month (future-friendly)
+      if (jumpGo) {
+        jumpGo.addEventListener("click", () => {
+          const y = Number(jumpYear.value);
+          const m = Number(jumpMonth.value);
+          if (!Number.isFinite(y) || y < 2026 || !Number.isFinite(m) || m < 0 || m > 11) return;
+          viewDate = new Date(y, m, 1);
+          // keep selected date inside that month (default to 1st)
+          selectDate(toISODate(new Date(y, m, 1)));
+        });
+      }
+
       // --- Filters/search ---
       function wireRerender(el) {
         el.addEventListener("input", renderNotesList);
@@ -1205,7 +1183,6 @@
 
       document.querySelectorAll('nav a[href^="#"]').forEach(a => {
         a.addEventListener("click", (e) => {
-          // keep hash update natural, but use smooth scroll
           e.preventDefault();
           const href = a.getAttribute("href");
           history.pushState(null, "", href);
@@ -1223,12 +1200,7 @@
 
       // --- Init ---
       (function init() {
-        // default selected date = today
-        const todayISO = toISODate(new Date());
-        selectedISO = todayISO;
-        viewDate = new Date();
         dateInput.value = selectedISO;
-
         renderCalendar();
         resetEditor();
         renderNotesList();
@@ -1238,3 +1210,4 @@
 
 </body>
 </html>
+
